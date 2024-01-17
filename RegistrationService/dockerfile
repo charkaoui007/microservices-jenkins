@@ -1,0 +1,11 @@
+FROM maven:3.9.6-openjdk-17 AS Builder
+WORKDIR ./src ./src
+COPY ./pom.xml .
+RUN mvn clean package
+
+
+FROM openjdk:17-jdk-alpine
+VOLUME /tmp
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} RegistrationService-0.0.1-SNAPSHOT
+ENTRYPOINT ["java","-jar","/RegistrationService-0.0.1-SNAPSHOT.jar"]
