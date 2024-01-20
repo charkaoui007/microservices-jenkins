@@ -16,7 +16,12 @@ pipeline {
                 bat 'docker system prune -a --volumes -f'
             }
         }
-        stage('Start container') {
+        stage('Build Docker images') {
+            steps {
+                bat 'docker-compose build --no-cache --pull --parallel'
+            }
+        }
+        stage('Start containers') {
             steps {
                 bat 'docker-compose up -d --no-color --wait'
                 bat 'docker-compose ps'
