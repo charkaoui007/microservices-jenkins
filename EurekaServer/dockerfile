@@ -1,12 +1,11 @@
 FROM maven:3.9.6-openjdk-17 AS Builder
-WORKDIR /app
+WORKDIR ./src ./src
 COPY ./pom.xml .
-COPY ./src ./src
 RUN mvn clean package
 
+
 FROM openjdk:17-jdk-alpine
-WORKDIR /app
 VOLUME /tmp
 ARG JAR_FILE=target/*.jar
-COPY --from=Builder /app/${JAR_FILE} EurekaServer-0.0.1-SNAPSHOT.jar
-ENTRYPOINT ["java", "-jar", "/app/EurekaServer-0.0.1-SNAPSHOT.jar"]
+COPY ${JAR_FILE} EurekaServer-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","/EurekaServer-0.0.1-SNAPSHOT.jar"]
